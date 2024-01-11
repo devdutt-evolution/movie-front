@@ -9,10 +9,13 @@ export default function Card({
   movie: { title: string; year: number; path: string; _id: string };
 }) {
   return (
-    <Link href={`movies/${movie._id}`}>
+    <Link
+      className="min-h-[400px] min-w-[150px] max-w-[300px]"
+      href={`movies/${movie._id}`}
+    >
       <div className="h-full w-full bg-card flex flex-col rounded-lg gap-2 p-2 hover:bg-input shadow-lg">
         <img
-          className="flex-1 object-cover mb-1 rounded-lg "
+          className="flex-1 w-full object-cover mb-1 block rounded-lg "
           src={backPath(movie.path)}
           alt="movie poster"
         />

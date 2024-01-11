@@ -111,7 +111,7 @@ export default function Wrapped() {
         </div>
       </div>
       {/* cards */}
-      <div className="grid w-full grid-cols-1 md:grid-cols-2 gap-4 lg:grid-cols-4">
+      <div className="grid gap-4 lg:grid-cols-4 md:grid-cols-2 grid-cols-1">
         {movies.map((v, i) => (
           <Card movie={v} key={i} />
         ))}

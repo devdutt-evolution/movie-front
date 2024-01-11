@@ -23,6 +23,11 @@ export default function Login() {
     }, 2000);
   }, [error]);
 
+  useEffect(() => {
+    let token = localStorage.getItem("token");
+    if (token) router.push("/movies");
+  }, [router]);
+
   const submitForm: SubmitHandler<FormBody> = async (body) => {
     try {
       let result = await axios.post(
@@ -44,9 +49,9 @@ export default function Login() {
   };
 
   return (
-    <div className="flex w-[min(1440px, 100vw)] h-[100vh] justify-center items-center relative">
+    <div className="flex w-[min(1440px, 100vw)] min-h-screen justify-center items-center relative">
       <form
-        className="flex flex-col items-center justify-center w-full sm:w-[332px] gap-y-6 px-4"
+        className="flex flex-col items-center justify-center w-full sm:w-[332px] px-4"
         onSubmit={handleSubmit(submitForm)}
         noValidate
       >
@@ -55,7 +60,7 @@ export default function Login() {
           type="text"
           placeholder="Email"
           autoComplete="off"
-          className={`w-full p-2 px-3 rounded-lg outline-none bg-input ${
+          className={`w-full mt-6 p-2 px-3 rounded-lg outline-none bg-input ${
             errors.email?.message
               ? "focus:outline-red"
               : "focus:outline-primary"
@@ -66,14 +71,14 @@ export default function Login() {
           })}
         />
         {errors.email?.message && (
-          <p className="w-full text-left text-sm text-red">
+          <p className="w-full pt-1 text-left text-sm text-red">
             {errors.email?.message}
           </p>
         )}
         <input
           type="password"
           placeholder="Password"
-          className={`w-full p-2 px-3 rounded-lg outline-none bg-input ${
+          className={`w-full p-2 mt-6 px-3 rounded-lg outline-none bg-input ${
             errors.password?.message
               ? "focus:outline-red"
               : "focus:outline-primary"
@@ -84,13 +89,13 @@ export default function Login() {
           })}
         />
         {errors.password?.message && (
-          <p className="w-full text-left text-sm text-red">
+          <p className="w-full pt-1 text-left text-sm text-red">
             {errors.password?.message}
           </p>
         )}
         <label
           htmlFor="remember"
-          className="flex items-start justify-center w-full p-0"
+          className="flex mt-6 items-start justify-center w-full p-0"
         >
           <input
             type="checkbox"
@@ -100,9 +105,11 @@ export default function Login() {
           />
           <span className="leading-tight text-md">Remember me</span>
         </label>
-        {error && <p className="w-full text-left text-sm text-red">{error}</p>}
+        {error && (
+          <p className="w-full pt-1 mt-4 text-left text-sm text-red">{error}</p>
+        )}
         <button
-          className="w-full p-2 rounded-lg bg-primary hover:bg-opacity-80"
+          className="w-full mt-6 p-2 rounded-lg bg-primary hover:bg-opacity-80"
           type="submit"
           id="submit"
         >

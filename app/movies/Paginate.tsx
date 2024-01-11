@@ -22,21 +22,34 @@ export default function Paginate({
     <div className="flex items-center justify-center w-full gap-1 my-8">
       <div className="flex items-center justify-center gap-3">
         <p
-          className={`p-2 rounded-lg cursor-pointer hover:shadow-lg border-1 hover:border-white hover:text-primary text-sm ${
+          className={`p-2 rounded-lg cursor-pointer text-sm font-bold hover:shadow-lg border-1 hover:border-white hover:text-primary ${
             page == 1 && "opacity-0"
           }`}
           onClick={reducePage}
         >
           Prev
         </p>
-        <input
-          className="p-1 px-2 rounded-lg bg-input w-[40px] outline-none remove-arrow"
-          type="number"
-          value={page}
-          disabled={true}
-        />
+        {!hasNext && page > 1 && (
+          <p
+            className="p-2 px-3 text-sm font-bold rounded-lg cursor-pointer bg-card"
+            onClick={reducePage}
+          >
+            {page - 1}
+          </p>
+        )}
+        <p className="p-2 px-3 text-sm font-bold rounded-lg cursor-pointer bg-primary">
+          {page}
+        </p>
+        {hasNext && (
+          <p
+            className="p-2 px-3 text-sm font-bold rounded-lg cursor-pointer bg-card"
+            onClick={increasePage}
+          >
+            {page + 1}
+          </p>
+        )}
         <p
-          className={`p-2 cursor-pointer rounded-lg hover:shadow-lg border-1 hover:border-white hover:text-primary text-sm ${
+          className={`p-2 cursor-pointer font-bold rounded-lg hover:shadow-lg border-1 hover:border-white hover:text-primary text-sm ${
             !hasNext && "opacity-0"
           }`}
           onClick={increasePage}

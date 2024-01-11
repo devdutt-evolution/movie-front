@@ -90,44 +90,6 @@ export default function Create() {
                 {formState.submitCount > 0 && !file && (
                   <p className="text-sm text-red">Poster is required</p>
                 )}
-                <input
-                  type="file"
-                  id="poster"
-                  // value={"/m1.png"}
-                  accept="image/*"
-                  onChange={(event) => {
-                    if (
-                      event?.currentTarget &&
-                      event.currentTarget?.files &&
-                      event.currentTarget.files[0]
-                    ) {
-                      const formData = new FormData();
-                      formData.append("poster", event.currentTarget.files[0]);
-                      let obj: any = event.currentTarget.files[0];
-                      setFileObject(obj);
-                      axios
-                        .post(
-                          `${process.env.NEXT_PUBLIC_BACKEND}/fileupload`,
-                          formData,
-                          {
-                            headers: {
-                              Authorization: `Bearer ${localStorage.getItem(
-                                "token"
-                              )}`,
-                            },
-                          }
-                        )
-                        .then((data) => {
-                          if (data.status == 200) return data.data.path;
-                        })
-                        .then((path) => {
-                          setFile(path);
-                        })
-                        .catch((err) => {});
-                    }
-                  }}
-                  className="absolute top-0 bottom-0 left-0 right-0 block w-full h-full opacity-0 cursor-pointer"
-                />
               </>
             ) : (
               <img
@@ -136,6 +98,44 @@ export default function Create() {
                 alt="preview"
               />
             )}
+            <input
+              type="file"
+              id="poster"
+              // value={"/m1.png"}
+              accept="image/*"
+              onChange={(event) => {
+                if (
+                  event?.currentTarget &&
+                  event.currentTarget?.files &&
+                  event.currentTarget.files[0]
+                ) {
+                  const formData = new FormData();
+                  formData.append("poster", event.currentTarget.files[0]);
+                  let obj: any = event.currentTarget.files[0];
+                  setFileObject(obj);
+                  axios
+                    .post(
+                      `${process.env.NEXT_PUBLIC_BACKEND}/fileupload`,
+                      formData,
+                      {
+                        headers: {
+                          Authorization: `Bearer ${localStorage.getItem(
+                            "token"
+                          )}`,
+                        },
+                      }
+                    )
+                    .then((data) => {
+                      if (data.status == 200) return data.data.path;
+                    })
+                    .then((path) => {
+                      setFile(path);
+                    })
+                    .catch((err) => {});
+                }
+              }}
+              className="absolute top-0 bottom-0 left-0 right-0 block w-full h-full opacity-0 cursor-pointer"
+            />
           </div>
           <section className="flex flex-col gap-6">
             <input
