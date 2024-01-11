@@ -24,23 +24,28 @@ export default function Wrapped() {
   const [movies, setMovies] = useState([]);
   const [page, setPage] = useState(1);
   const [hasNext, setHasNext] = useState(false);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     (async () => {
+      setLoading(true);
       let result = await callApi(localStorage.getItem("token") as string, page);
       // if (result.err) console.error(result.err);
+      setLoading(false);
       setMovies(result.data?.movies);
       setHasNext(result.data.hasMore);
     })();
   }, [page]);
 
   useEffect(() => {
+    setLoading(true);
     let token = localStorage.getItem("token");
     if (!token) return router.push("/login");
     if (token) {
       (async () => {
         let result = await callApi(token, 1);
         if (result.err) console.error(result.err);
+        setLoading(false);
         setMovies(result.data?.movies);
         setHasNext(result.data?.hasMore);
       })();
@@ -51,6 +56,13 @@ export default function Wrapped() {
     localStorage.removeItem("token");
     router.push("/login");
   };
+
+  if (loading)
+    return (
+      <div className="flex justify-center items-center w-full min-h-screen">
+        <div className="border-l-2 border-l-primary rounded-full animate-spin w-8 h-8"></div>
+      </div>
+    );
 
   if (!movies.length)
     return (
@@ -66,7 +78,7 @@ export default function Wrapped() {
     );
 
   return (
-    <div className="flex flex-col gap-14 md:gap-22 items-center w-[min(1440px, 100vw)] py-10 px-20">
+    <div className="flex flex-col gap-14 md:gap-22 items-center w-[min(1440px, 100vw)] min-h-screen py-10 px-20">
       {/* nav */}
       <div className="flex items-center justify-between w-full my-4 md:my-8">
         <h2 className="flex text-2xl leading-tight md:text-5xl">
@@ -99,7 +111,7 @@ export default function Wrapped() {
         </div>
       </div>
       {/* cards */}
-      <div className="grid w-full grid-cols-2 gap-4 md:grid-cols-4">
+      <div className="grid w-full grid-cols-1 md:grid-cols-2 gap-4 lg:grid-cols-4">
         {movies.map((v, i) => (
           <Card movie={v} key={i} />
         ))}

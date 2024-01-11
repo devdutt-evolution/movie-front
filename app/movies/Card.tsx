@@ -10,7 +10,7 @@ export default function Card({
 }) {
   return (
     <Link href={`movies/${movie._id}`}>
-      <div className="min-h-[400px] bg-card flex flex-col rounded-lg gap-2 p-2 hover:bg-input shadow-lg">
+      <div className="h-full w-full bg-card flex flex-col rounded-lg gap-2 p-2 hover:bg-input shadow-lg">
         <img
           className="flex-1 object-cover mb-1 rounded-lg "
           src={backPath(movie.path)}
