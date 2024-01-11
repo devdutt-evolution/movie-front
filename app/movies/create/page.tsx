@@ -3,7 +3,7 @@
 import Image from "next/image";
 import download from "../../../public/download.png";
 import { useForm } from "react-hook-form";
-import { RedirectType, redirect, useRouter } from "next/navigation";
+import { useRouter } from "next/navigation";
 import axios from "axios";
 import { useEffect, useState } from "react";
 
@@ -49,7 +49,7 @@ export default function Create() {
       .catch((err) => {
         if (err.name == "Error" && err.response.status == 401) {
           localStorage.removeItem("token");
-          redirect("/login", RedirectType.replace);
+          router.replace("/login");
         } else if (err.name == "Error" && err.response.status == 400) {
           setError(err.response.data.message);
         } else if (err.name == "Error" && err.response.status == 500) {
@@ -76,8 +76,8 @@ export default function Create() {
 
   useEffect(() => {
     let token = localStorage.getItem("token");
-    if (!token) redirect("/login", RedirectType.replace);
-  }, []);
+    if (!token) router.replace("/login");
+  }, [router]);
 
   return (
     <div className="w-[min(1440px, 100vw)] min-h-screen py-10 px-20">
@@ -147,7 +147,7 @@ export default function Create() {
                     .catch((err) => {
                       if (err.name == "Error" && err.response.status == 401) {
                         localStorage.removeItem("token");
-                        redirect("/login", RedirectType.replace);
+                        router.replace("/login");
                       } else if (
                         err.name == "Error" &&
                         err.response.status == 400

@@ -3,7 +3,7 @@
 import Image from "next/image";
 import download from "../../../public/download.png";
 import { useForm } from "react-hook-form";
-import { RedirectType, redirect, useRouter } from "next/navigation";
+import {  useRouter } from "next/navigation";
 import axios from "axios";
 import { useEffect, useState } from "react";
 
@@ -55,7 +55,7 @@ export default function Edit({ params }: { params: { movieId: string } }) {
       .catch((err) => {
         if (err.name == "AxiosError" && err.response.status == 401) {
           localStorage.removeItem("token");
-          redirect("/login", RedirectType.replace);
+          router.replace("/login")
         } else if (err.name == "AxiosError" && err.response.status == 400) {
           setError(err.response.data.message);
         } else if (err.name == "AxiosError" && err.response.status == 500) {
@@ -82,8 +82,8 @@ export default function Edit({ params }: { params: { movieId: string } }) {
 
   useEffect(() => {
     let token = localStorage.getItem("token");
-    if (!token) redirect("/login", RedirectType.replace);
-  }, []);
+    if (!token) router.replace("/login")
+  }, [router]);
 
   useEffect(() => {
     (async () => {
@@ -105,7 +105,7 @@ export default function Edit({ params }: { params: { movieId: string } }) {
           setLoading(false);
           if (err.name == "AxiosError" && err.response.status == 401) {
             localStorage.removeItem("token");
-            redirect("/login", RedirectType.replace);
+            router.replace("/login")
           } else if (err.name == "AxiosError" && err.response.status == 400) {
             setError(err.response.data.message);
           } else if (err.name == "AxiosError" && err.response.status == 500) {
@@ -113,7 +113,7 @@ export default function Edit({ params }: { params: { movieId: string } }) {
           }
         });
     })();
-  }, [reset, params]);
+  }, [reset, params, router]);
 
   if (loading)
     return (
@@ -211,7 +211,7 @@ export default function Edit({ params }: { params: { movieId: string } }) {
                         err.response.status == 401
                       ) {
                         localStorage.removeItem("token");
-                        redirect("/login",RedirectType.replace);
+                        router.replace("/login")
                       } else if (
                         err.name == "AxiosError" &&
                         err.response.status == 400

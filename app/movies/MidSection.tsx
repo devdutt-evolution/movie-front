@@ -1,7 +1,7 @@
 "use client";
 
 import axios from "axios";
-import { RedirectType, redirect, useRouter } from "next/navigation";
+import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import Card from "./Card";
 const LIMIT = 8;
@@ -36,17 +36,17 @@ export default function MidSection({
       } catch (err: any) {
         if (err.name == "AxiosError" && err.response.status == 401) {
           localStorage.removeItem("token");
-          redirect("/login", RedirectType.replace);
+          router.replace("/login");
         }
       }
     };
     callFun();
-  }, [page, setHasNext]);
+  }, [page, setHasNext, router]);
 
   useEffect(() => {
     let token = localStorage.getItem("token");
-    if (!token) return redirect("/login", RedirectType.replace);
-  }, []);
+    if (!token) return router.replace("/login");
+  }, [router]);
 
   if (loading)
     return (
