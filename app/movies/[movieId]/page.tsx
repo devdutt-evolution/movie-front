@@ -148,7 +148,7 @@ export default function Edit({ params }: { params: { movieId: string } }) {
             )}
             <input
               id="year"
-              placeholder="Pulishing Year"
+              placeholder="Publishing Year"
               type="number"
               {...register("year", {
                 required: true,

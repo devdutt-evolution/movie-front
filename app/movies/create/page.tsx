@@ -150,7 +150,7 @@ export default function Create() {
             )}
             <input
               id="year"
-              placeholder="Pulishing Year"
+              placeholder="Publishing Year"
               type="number"
               {...register("year", {
                 required: true,
