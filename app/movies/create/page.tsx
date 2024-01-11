@@ -3,7 +3,7 @@
 import Image from "next/image";
 import download from "../../../public/download.png";
 import { useForm } from "react-hook-form";
-import { useRouter } from "next/navigation";
+import { RedirectType, redirect, useRouter } from "next/navigation";
 import axios from "axios";
 import { useEffect, useState } from "react";
 
@@ -18,13 +18,16 @@ export default function Create() {
   const [file, setFile] = useState("");
   const [fileObject, setFileObject] = useState(null);
   const [imagePreview, setImagePreview] = useState<string | null>(null);
-  const { register, handleSubmit, formState } = useForm<FormBody>();
-  const { errors } = formState;
+  const [error, setError] = useState("");
+  const {
+    register,
+    handleSubmit,
+    formState: { errors, submitCount },
+  } = useForm<FormBody>();
 
   const submitForm = (data: FormBody) => {
-    if (!file) {
-      return;
-    }
+    if (!file) return;
+
     axios
       .post(
         `${process.env.NEXT_PUBLIC_BACKEND}/movies`,
@@ -43,7 +46,16 @@ export default function Create() {
         console.log(data);
         if (data.status == 201) router.push("/movies");
       })
-      .catch((err) => {});
+      .catch((err) => {
+        if (err.name == "Error" && err.response.status == 401) {
+          localStorage.removeItem("token");
+          redirect("/login", RedirectType.replace);
+        } else if (err.name == "Error" && err.response.status == 400) {
+          setError(err.response.data.message);
+        } else if (err.name == "Error" && err.response.status == 500) {
+          setError("Internal Server Error");
+        }
+      });
   };
 
   useEffect(() => {
@@ -64,8 +76,8 @@ export default function Create() {
 
   useEffect(() => {
     let token = localStorage.getItem("token");
-    if (!token) router.push("/login");
-  }, [router]);
+    if (!token) redirect("/login", RedirectType.replace);
+  }, []);
 
   return (
     <div className="w-[min(1440px, 100vw)] min-h-screen py-10 px-20">
@@ -87,7 +99,7 @@ export default function Create() {
                   height={24}
                 />
                 <p className="text-sm">Drop an image here</p>
-                {formState.submitCount > 0 && !file && (
+                {submitCount > 0 && !file && (
                   <p className="text-sm text-red">Poster is required</p>
                 )}
               </>
@@ -113,6 +125,7 @@ export default function Create() {
                   formData.append("poster", event.currentTarget.files[0]);
                   let obj: any = event.currentTarget.files[0];
                   setFileObject(obj);
+
                   axios
                     .post(
                       `${process.env.NEXT_PUBLIC_BACKEND}/fileupload`,
@@ -131,7 +144,22 @@ export default function Create() {
                     .then((path) => {
                       setFile(path);
                     })
-                    .catch((err) => {});
+                    .catch((err) => {
+                      if (err.name == "Error" && err.response.status == 401) {
+                        localStorage.removeItem("token");
+                        redirect("/login", RedirectType.replace);
+                      } else if (
+                        err.name == "Error" &&
+                        err.response.status == 400
+                      ) {
+                        setError(err.response.data.message);
+                      } else if (
+                        err.name == "Error" &&
+                        err.response.status == 500
+                      ) {
+                        setError("Internal Server Error");
+                      }
+                    });
                 }
               }}
               className="absolute top-0 bottom-0 left-0 right-0 block w-full h-full opacity-0 cursor-pointer"
@@ -168,6 +196,7 @@ export default function Create() {
             {errors.year?.message && (
               <p className="w-full text-sm text-red">{errors.year?.message}</p>
             )}
+            {error && <p className="w-full text-sm text-red">{error}</p>}
             <div className="flex mt-6 gap-6 w-[70%]">
               <button
                 className="flex-1 border-2 border-white rounded-lg cursor-pointer hover:bg-opacity-80"

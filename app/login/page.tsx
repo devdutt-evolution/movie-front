@@ -1,6 +1,6 @@
 "use client";
 import axios from "axios";
-import { useRouter } from "next/navigation";
+import { redirect, useRouter } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 
@@ -25,8 +25,8 @@ export default function Login() {
 
   useEffect(() => {
     let token = localStorage.getItem("token");
-    if (token) router.push("/movies");
-  }, [router]);
+    if (token) redirect("/movies");
+  }, []);
 
   const submitForm: SubmitHandler<FormBody> = async (body) => {
     try {
@@ -41,8 +41,8 @@ export default function Login() {
       router.push("/movies");
     } catch (err: any) {
       if (
-        (err.name == "AxiosError" && err.response.status == 401) ||
-        err.response.status == 400
+        err.name == "AxiosError" &&
+        (err.response.status == 401 || err.response.status == 400)
       )
         setError(err.response.data.message);
     }
@@ -71,7 +71,7 @@ export default function Login() {
           })}
         />
         {errors.email?.message && (
-          <p className="w-full pt-1 text-left text-sm text-red">
+          <p className="w-full pt-1 text-sm text-left text-red">
             {errors.email?.message}
           </p>
         )}
@@ -89,13 +89,13 @@ export default function Login() {
           })}
         />
         {errors.password?.message && (
-          <p className="w-full pt-1 text-left text-sm text-red">
+          <p className="w-full pt-1 text-sm text-left text-red">
             {errors.password?.message}
           </p>
         )}
         <label
           htmlFor="remember"
-          className="flex mt-6 items-start justify-center w-full p-0"
+          className="flex items-start justify-center w-full p-0 mt-6"
         >
           <input
             type="checkbox"
@@ -106,10 +106,10 @@ export default function Login() {
           <span className="leading-tight text-md">Remember me</span>
         </label>
         {error && (
-          <p className="w-full pt-1 mt-4 text-left text-sm text-red">{error}</p>
+          <p className="w-full pt-1 mt-4 text-sm text-left text-red">{error}</p>
         )}
         <button
-          className="w-full mt-6 p-2 rounded-lg bg-primary hover:bg-opacity-80"
+          className="w-full p-2 mt-6 rounded-lg bg-primary hover:bg-opacity-80"
           type="submit"
           id="submit"
         >

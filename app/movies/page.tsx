@@ -1,6 +1,6 @@
 "use client";
 
-import { useRouter } from "next/navigation";
+import { RedirectType, redirect, useRouter } from "next/navigation";
 import Image from "next/image";
 import { MouseEventHandler, useState } from "react";
 import Paginate from "./Paginate";
@@ -15,7 +15,7 @@ export default function Movies() {
 
   const logout: MouseEventHandler = (e) => {
     localStorage.removeItem("token");
-    router.push("/login");
+    redirect("/login", RedirectType.replace);
   };
 
   return (

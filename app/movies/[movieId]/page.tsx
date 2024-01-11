@@ -3,7 +3,7 @@
 import Image from "next/image";
 import download from "../../../public/download.png";
 import { useForm } from "react-hook-form";
-import { useRouter } from "next/navigation";
+import { RedirectType, redirect, useRouter } from "next/navigation";
 import axios from "axios";
 import { useEffect, useState } from "react";
 
@@ -22,6 +22,7 @@ export default function Edit({ params }: { params: { movieId: string } }) {
   const [imagePreview, setImagePreview] = useState<string | null>(null);
   const [initail, setInitail] = useState(true);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState("");
   const [defaultPath, setDefaultPath] = useState("");
 
   const {
@@ -32,10 +33,8 @@ export default function Edit({ params }: { params: { movieId: string } }) {
   } = useForm<FormBody>();
 
   const submitForm = (data: FormBody) => {
-    if (!file && !initail) {
-      console.log("HOW TF");
-      return;
-    }
+    if (!file && !initail) return;
+
     axios
       .put(
         `${process.env.NEXT_PUBLIC_BACKEND}/movies/${params.movieId}`,
@@ -51,10 +50,18 @@ export default function Edit({ params }: { params: { movieId: string } }) {
         }
       )
       .then((data) => {
-        console.log(data);
         if (data.status == 200) router.push("/movies");
       })
-      .catch((err) => {});
+      .catch((err) => {
+        if (err.name == "AxiosError" && err.response.status == 401) {
+          localStorage.removeItem("token");
+          redirect("/login", RedirectType.replace);
+        } else if (err.name == "AxiosError" && err.response.status == 400) {
+          setError(err.response.data.message);
+        } else if (err.name == "AxiosError" && err.response.status == 500) {
+          setError("Internal Server Error");
+        }
+      });
   };
 
   useEffect(() => {
@@ -75,8 +82,8 @@ export default function Edit({ params }: { params: { movieId: string } }) {
 
   useEffect(() => {
     let token = localStorage.getItem("token");
-    if (!token) router.push("/login");
-  }, [router]);
+    if (!token) redirect("/login", RedirectType.replace);
+  }, []);
 
   useEffect(() => {
     (async () => {
@@ -94,14 +101,24 @@ export default function Edit({ params }: { params: { movieId: string } }) {
           setLoading(false);
           setDefaultPath(data.path);
         })
-        .catch((err) => console.error(err));
+        .catch((err) => {
+          setLoading(false);
+          if (err.name == "AxiosError" && err.response.status == 401) {
+            localStorage.removeItem("token");
+            redirect("/login", RedirectType.replace);
+          } else if (err.name == "AxiosError" && err.response.status == 400) {
+            setError(err.response.data.message);
+          } else if (err.name == "AxiosError" && err.response.status == 500) {
+            setError("Internal Server Error");
+          }
+        });
     })();
   }, [reset, params]);
 
   if (loading)
     return (
-      <div className="flex justify-center items-center w-full min-h-screen">
-        <div className="border-l-2 border-l-primary rounded-full animate-spin w-8 h-8"></div>
+      <div className="flex items-center justify-center w-full min-h-screen">
+        <div className="w-8 h-8 border-l-2 rounded-full border-l-primary animate-spin"></div>
       </div>
     );
 
@@ -189,6 +206,23 @@ export default function Edit({ params }: { params: { movieId: string } }) {
                     })
                     .catch((err) => {
                       setLoading(false);
+                      if (
+                        err.name == "AxiosError" &&
+                        err.response.status == 401
+                      ) {
+                        localStorage.removeItem("token");
+                        redirect("/login",RedirectType.replace);
+                      } else if (
+                        err.name == "AxiosError" &&
+                        err.response.status == 400
+                      ) {
+                        setError(err.response.data.message);
+                      } else if (
+                        err.name == "AxiosError" &&
+                        err.response.status == 500
+                      ) {
+                        setError("Internal Server Error");
+                      }
                     });
                 }
               }}
@@ -226,6 +260,7 @@ export default function Edit({ params }: { params: { movieId: string } }) {
             {errors.year?.message && (
               <p className="w-full text-sm text-red">{errors.year?.message}</p>
             )}
+            {error && <p className="w-full text-sm text-red">{error}</p>}
             <div className="flex mt-6 gap-6 w-[70%]">
               <button
                 className="flex-1 border-2 border-white rounded-lg cursor-pointer hover:bg-opacity-80"
