@@ -9,5 +9,9 @@ const dictionaries = {
     import("@/dictionaries/hn.json").then(
       (module) => module.default as Content
     ),
+  gj: () =>
+    import("@/dictionaries/gj.json").then(
+      (module) => module.default as Content
+    ),
 };
 export const getDictionaries = (local: Local) => dictionaries[local]();

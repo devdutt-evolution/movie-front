@@ -1,35 +1,35 @@
 {
   "login": {
-    "singin": "Sign in F",
-    "email": "Email F",
-    "password": "Password F",
-    "remember": "Remember me F",
-    "login": "Login F"
+    "singin": "साइन इन",
+    "email": "ईमेल",
+    "password": "पासवर्ड",
+    "remember": "याद रखें",
+    "login": "लॉग इन"
   },
   "movies": {
     "create": {
-      "create": "Create a new Movie F",
-      "title": "Movie Title F",
-      "year": "Released Year F",
-      "cancel": "Cancel F",
-      "submit": "Submit F",
-      "drop_file": "Drop a file here F"
+      "create": "नई मूवी बनाएं",
+      "title": "मूवी शीर्षक",
+      "year": "रिलीज का वर्ष",
+      "cancel": "रद्द करें",
+      "submit": "सबमिट करें",
+      "drop_file": "यहां फ़ाइल छोड़ें"
     },
     "movieId": {
-      "edit": "Edit Movie F",
-      "title": "Movie Title F",
-      "year": "Released Year F",
-      "cancel": "Cancel F",
-      "update": "Update F",
-      "drop_file": "Drop a file here F"
+      "edit": "मूवी संपादित करें",
+      "title": "मूवी शीर्षक",
+      "year": "रिलीज का वर्ष",
+      "cancel": "रद्द करें",
+      "update": "अपडेट करें",
+      "drop_file": "यहां फ़ाइल छोड़ें"
     },
     "no_movies": {
-      "button": "Add a new movie F",
-      "title": "Your movie list is empty F"
+      "button": "नई फिल्म जोड़ें",
+      "title": "आपकी फिल्म सूची खाली है"
     },
-    "my_movies": "My movies F",
-    "logout": "Logout F",
-    "next": "Next F",
-    "prev": "Prev F"
+    "my_movies": "मेरी फिल्में",
+    "logout": "लॉगआउट",
+    "next": "आगे",
+    "prev": "पिछला"
   }
 }
