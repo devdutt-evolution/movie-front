@@ -272,7 +272,7 @@ export default function Edit({
             {error && <p className="w-full text-sm text-red">{error}</p>}
             <div className="flex mt-6 gap-6 w-[70%]">
               <button
-                className="flex-1 border-2 border-white rounded-lg cursor-pointer hover:bg-opacity-80"
+                className="flex-1 bg-card border-2 border-white rounded-lg cursor-pointer hover:bg-opacity-20"
                 onClick={(e) => {
                   e.preventDefault();
                   router.push(`/${params.lang}/movies`);
@@ -281,7 +281,7 @@ export default function Edit({
                 {text?.cancel}
               </button>
               <button
-                className="flex-1 py-3 rounded-lg cursor-pointer bg-primary hover:bg-opacity-80"
+                className="flex-1 py-3 rounded-lg cursor-pointer bg-primary hover:bg-opacity-20"
                 type="submit"
               >
                 {text?.update}

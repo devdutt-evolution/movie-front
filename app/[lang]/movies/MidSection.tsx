@@ -65,7 +65,7 @@ export default function MidSection({
       <div className="flex flex-col justify-center gap-6 items-center w-[min(1440px, 100vw)] p-32">
         <h2 className="text-[48px]">{text?.title}</h2>
         <button
-          className="px-4 py-2 rounded-lg bg-primary hover:bg-opacity-80"
+          className="px-4 py-2 rounded-lg bg-primary hover:bg-opacity-20"
           onClick={(e) => router.push(`/${lang}/movies/create`)}
         >
           {text?.button}
