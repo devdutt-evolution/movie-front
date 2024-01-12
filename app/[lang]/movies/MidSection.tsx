@@ -4,16 +4,21 @@ import axios from "axios";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import Card from "./Card";
+import { getDictionaries } from "@/lib/dictionaries";
+import { Content, Local } from "@/i18n.config";
 const LIMIT = 8;
 
 export default function MidSection({
   page,
   setHasNext,
+  lang,
 }: {
   page: number;
   setHasNext: Function;
+  lang: Local;
 }) {
   const router = useRouter();
+  const [text, setText] = useState<Content["movies"]["no_movies"]>();
   const [movies, setMovies] = useState([]);
   const [loading, setLoading] = useState(true);
 
@@ -36,17 +41,18 @@ export default function MidSection({
       } catch (err: any) {
         if (err.name == "AxiosError" && err.response.status == 401) {
           localStorage.removeItem("token");
-          router.replace("/login");
+          router.replace(`/${lang}/login`);
         }
       }
     };
     callFun();
-  }, [page, setHasNext, router]);
+  }, [page, setHasNext, router, lang]);
 
   useEffect(() => {
     let token = localStorage.getItem("token");
-    if (!token) return router.replace("/login");
-  }, [router]);
+    if (!token) return router.replace(`/${lang}/login`);
+    getDictionaries(lang).then((data) => setText(data.movies.no_movies));
+  }, [router, lang]);
 
   if (loading)
     return (
@@ -58,12 +64,12 @@ export default function MidSection({
   if (!movies.length)
     return (
       <div className="flex flex-col justify-center gap-6 items-center w-[min(1440px, 100vw)] p-32">
-        <h2 className="text-[48px]">Your movie list is empty</h2>
+        <h2 className="text-[48px]">{text?.title}</h2>
         <button
           className="px-4 py-2 rounded-lg bg-primary hover:bg-opacity-80"
-          onClick={(e) => router.push("/movies/create")}
+          onClick={(e) => router.push(`/${lang}/movies/create`)}
         >
-          Add a new movie
+          {text?.button}
         </button>
       </div>
     );

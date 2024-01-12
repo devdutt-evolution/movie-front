@@ -1,8 +1,10 @@
 "use client";
 import axios from "axios";
-import { redirect, useRouter } from "next/navigation";
+import { useRouter } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
+import type { Content, Local } from "@/i18n.config";
+import { getDictionaries } from "@/lib/dictionaries";
 
 type FormBody = {
   email: string;
@@ -10,7 +12,8 @@ type FormBody = {
   remember: boolean;
 };
 
-export default function Login() {
+export default function Login({ params }: { params: { lang: Local } }) {
+  const [text, setText] = useState<Content>();
   const router = useRouter();
   let ref = useRef<any>();
   const [error, setError] = useState("");
@@ -25,8 +28,9 @@ export default function Login() {
 
   useEffect(() => {
     let token = localStorage.getItem("token");
-    if (token) redirect("/movies");
-  }, []);
+    if (token) router.push(`/${params.lang}/movies`);
+    getDictionaries(params.lang).then((data) => setText(data));
+  }, [router, params]);
 
   const submitForm: SubmitHandler<FormBody> = async (body) => {
     try {
@@ -38,7 +42,7 @@ export default function Login() {
         }
       );
       localStorage.setItem("token", result.data.token);
-      router.push("/movies");
+      router.push(`/${params.lang}/movies`);
     } catch (err: any) {
       if (
         err.name == "AxiosError" &&
@@ -55,10 +59,10 @@ export default function Login() {
         onSubmit={handleSubmit(submitForm)}
         noValidate
       >
-        <h2 className="text-[64px]">Sign in</h2>
+        <h2 className="text-[64px]">{text?.login.singin}</h2>
         <input
           type="text"
-          placeholder="Email"
+          placeholder={text?.login.email}
           autoComplete="off"
           className={`w-full mt-6 p-2 px-3 rounded-lg outline-none bg-input ${
             errors.email?.message
@@ -77,7 +81,7 @@ export default function Login() {
         )}
         <input
           type="password"
-          placeholder="Password"
+          placeholder={text?.login.password}
           className={`w-full p-2 mt-6 px-3 rounded-lg outline-none bg-input ${
             errors.password?.message
               ? "focus:outline-red"
@@ -103,7 +107,7 @@ export default function Login() {
             className="accent-primary mr-2 w-[18px] h-[18px]"
             {...register("remember")}
           />
-          <span className="leading-tight text-md">Remember me</span>
+          <span className="leading-tight text-md">{text?.login.remember}</span>
         </label>
         {error && (
           <p className="w-full pt-1 mt-4 text-sm text-left text-red">{error}</p>
@@ -113,7 +117,7 @@ export default function Login() {
           type="submit"
           id="submit"
         >
-          Login
+          {text?.login.login}
         </button>
       </form>
     </div>

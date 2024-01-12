@@ -2,20 +2,27 @@
 
 import { useRouter } from "next/navigation";
 import Image from "next/image";
-import { MouseEventHandler, useState } from "react";
+import { MouseEventHandler, useEffect, useState } from "react";
 import Paginate from "./Paginate";
 import MidSection from "./MidSection";
-import logoutLogo from "../../public/logout.svg";
-import createLogo from "../../public/plus.svg";
+import logoutLogo from "@/public/logout.svg";
+import createLogo from "@/public/plus.svg";
+import { Content, Local } from "@/i18n.config";
+import { getDictionaries } from "@/lib/dictionaries";
 
-export default function Movies() {
+export default function Movies({ params }: { params: { lang: Local } }) {
   const router = useRouter();
+  const [text, setText] = useState<Content["movies"]>();
   const [page, setPage] = useState(1);
   const [hasNext, setHasNext] = useState(false);
 
+  useEffect(() => {
+    getDictionaries(params.lang).then((data) => setText(data.movies));
+  }, [params]);
+
   const logout: MouseEventHandler = (e) => {
     localStorage.removeItem("token");
-    router.replace("/login");
+    router.replace(`/${params.lang}/login`);
   };
 
   return (
@@ -23,10 +30,10 @@ export default function Movies() {
       {/* nav */}
       <div className="flex items-center justify-between w-full my-4 md:my-8">
         <h2 className="flex text-2xl leading-tight md:text-5xl">
-          My movies
+          {text?.my_movies}
           <p
             className="flex items-center justify-center ml-2 cursor-pointer"
-            onClick={(e) => router.push("/movies/create")}
+            onClick={(e) => router.push(`/${params.lang}/movies/create`)}
           >
             <Image
               src={createLogo}
@@ -41,7 +48,7 @@ export default function Movies() {
           className="flex gap-2 text-lg cursor-pointer md:text-2xl"
           onClick={logout}
         >
-          <p className="invisible md:visible">Logout</p>
+          <p className="invisible md:visible">{text?.logout}</p>
           <Image
             src={logoutLogo}
             width={25}
@@ -52,9 +59,14 @@ export default function Movies() {
         </div>
       </div>
       {/* cards */}
-      <MidSection page={page} setHasNext={setHasNext} />
+      <MidSection lang={params.lang} page={page} setHasNext={setHasNext} />
       {/* pagination */}
-      <Paginate hasNext={hasNext} setPage={setPage} page={page} />
+      <Paginate
+        hasNext={hasNext}
+        setPage={setPage}
+        page={page}
+        lang={params.lang}
+      />
     </div>
   );
 }

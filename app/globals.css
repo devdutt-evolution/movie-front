@@ -37,4 +37,5 @@ body {
 }
 .remove-arrow {
   -moz-appearance: textfield;
+  appearance: textfield;
 }

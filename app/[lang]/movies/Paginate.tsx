@@ -1,16 +1,26 @@
 "use client";
 
-import { MouseEventHandler } from "react";
+import { Content, Local } from "@/i18n.config";
+import { getDictionaries } from "@/lib/dictionaries";
+import { MouseEventHandler, useEffect, useState } from "react";
 
 export default function Paginate({
   hasNext,
   page,
   setPage,
+  lang,
 }: {
   hasNext: boolean;
   page: number;
   setPage: Function;
+  lang: Local;
 }) {
+  const [text, setText] = useState<Content["movies"]>();
+
+  useEffect(() => {
+    getDictionaries(lang).then((data) => setText(data.movies));
+  }, [lang]);
+
   const increasePage: MouseEventHandler = (e) => {
     if (hasNext) setPage(page + 1);
   };
@@ -27,7 +37,7 @@ export default function Paginate({
           }`}
           onClick={reducePage}
         >
-          Prev
+          {text?.prev}
         </p>
         {!hasNext && page > 1 && (
           <p
@@ -54,7 +64,7 @@ export default function Paginate({
           }`}
           onClick={increasePage}
         >
-          Next
+          {text?.next}
         </p>
       </div>
     </div>

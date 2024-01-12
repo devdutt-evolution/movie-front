@@ -1,0 +1,35 @@
+{
+  "login": {
+    "singin": "Sign in F",
+    "email": "Email F",
+    "password": "Password F",
+    "remember": "Remember me F",
+    "login": "Login F"
+  },
+  "movies": {
+    "create": {
+      "create": "Create a new Movie F",
+      "title": "Movie Title F",
+      "year": "Released Year F",
+      "cancel": "Cancel F",
+      "submit": "Submit F",
+      "drop_file": "Drop a file here F"
+    },
+    "movieId": {
+      "edit": "Edit Movie F",
+      "title": "Movie Title F",
+      "year": "Released Year F",
+      "cancel": "Cancel F",
+      "update": "Update F",
+      "drop_file": "Drop a file here F"
+    },
+    "no_movies": {
+      "button": "Add a new movie F",
+      "title": "Your movie list is empty F"
+    },
+    "my_movies": "My movies F",
+    "logout": "Logout F",
+    "next": "Next F",
+    "prev": "Prev F"
+  }
+}
