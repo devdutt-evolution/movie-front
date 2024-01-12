@@ -188,11 +188,13 @@ export default function Create({ params }: { params: { lang: Local } }) {
                 required: true,
                 min: {
                   value: 1888,
-                  message: "Released Year shoud be greater than 1888",
+                  message: "First ever movie was released in 1888",
                 },
                 max: {
-                  value: new Date().getUTCFullYear(),
-                  message: "Relase Year cannot be in future",
+                  value: new Date().getUTCFullYear() + 25,
+                  message: `Release Year cannot be greater than ${
+                    new Date().getUTCFullYear() + 25
+                  }`,
                 },
               })}
               className="remove-arrow bg-input p-2 px-3 outline-none focus:outline-primary rounded-lg w-full sm:w-[50%]"
