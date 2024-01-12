@@ -34,7 +34,6 @@ export default function MidSection({
             },
           }
         );
-        // if (result.err) console.error(result.err);
         setLoading(false);
         setMovies(result.data?.movies);
         setHasNext(result.data.hasMore);

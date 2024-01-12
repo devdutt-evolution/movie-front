@@ -12,11 +12,9 @@ import { getDictionaries } from "@/lib/dictionaries";
 type FormBody = {
   title: string;
   year: number;
-  // poster: { fileName: string };
 };
 let backPath = (path: string) =>
-  // `${process.env.NEXT_PUBLIC_BACKEND}/posters/${path}`;
-  `http://localhost:3001/posters/${path}`;
+  `${process.env.NEXT_PUBLIC_BACKEND}/posters/${path}`;
 
 export default function Edit({
   params,
@@ -181,7 +179,6 @@ export default function Edit({
             <input
               type="file"
               id="poster"
-              // value={"/m1.png"}
               accept="image/*"
               onChange={(event) => {
                 if (

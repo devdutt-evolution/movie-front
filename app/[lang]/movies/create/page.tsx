@@ -12,7 +12,6 @@ import { getDictionaries } from "@/lib/dictionaries";
 type FormBody = {
   title: string;
   year: number;
-  // poster: { fileName: string };
 };
 
 export default function Create({ params }: { params: { lang: Local } }) {
@@ -119,7 +118,6 @@ export default function Create({ params }: { params: { lang: Local } }) {
             <input
               type="file"
               id="poster"
-              // value={"/m1.png"}
               accept="image/*"
               onChange={(event) => {
                 if (
