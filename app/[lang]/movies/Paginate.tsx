@@ -28,12 +28,14 @@ export default function Paginate({
     if (page > 1) setPage(page - 1);
   };
 
+  if (page == 1 && !hasNext) return <></>;
+
   return (
     <div className="flex items-center justify-center w-full gap-1 my-8">
       <div className="flex items-center justify-center gap-3">
         <p
-          className={`p-2 rounded-lg cursor-pointer text-sm font-bold hover:shadow-lg border-1 hover:border-white hover:text-primary ${
-            page == 1 && "opacity-0"
+          className={`p-2 rounded-lg text-sm font-bold  hover:text-primary ${
+            page == 1 ? "cursor-not-allowed" : "cursor-pointer"
           }`}
           onClick={reducePage}
         >
@@ -59,8 +61,8 @@ export default function Paginate({
           </p>
         )}
         <p
-          className={`p-2 cursor-pointer font-bold rounded-lg hover:shadow-lg border-1 hover:border-white hover:text-primary text-sm ${
-            !hasNext && "opacity-0"
+          className={`p-2 font-bold rounded-lg hover:text-primary text-sm ${
+            hasNext ? "cursor-pointer" : "cursor-not-allowed"
           }`}
           onClick={increasePage}
         >
