@@ -5,20 +5,26 @@ import { useEffect, useRef, useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 import type { Content, Local } from "@/i18n.config";
 import { getDictionaries } from "@/lib/dictionaries";
+import Checkbox from "./Checkbox";
 
 type FormBody = {
   email: string;
   password: string;
-  remember: boolean;
 };
 
 export default function Login({ params }: { params: { lang: Local } }) {
-  const [text, setText] = useState<Content>();
   const router = useRouter();
   let ref = useRef<any>();
+
+  const [text, setText] = useState<Content>();
   const [error, setError] = useState("");
-  const { register, handleSubmit, formState } = useForm<FormBody>();
-  const { errors } = formState;
+  const [checked, setChecked] = useState(false);
+
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<FormBody>();
 
   useEffect(() => {
     ref.current = setTimeout(() => {
@@ -55,7 +61,7 @@ export default function Login({ params }: { params: { lang: Local } }) {
   return (
     <div className="flex w-[min(1440px, 100vw)] min-h-screen justify-center items-center relative">
       <form
-        className="flex flex-col items-center justify-center w-full sm:w-[332px] px-4"
+        className="flex flex-col items-center justify-center w-full sm:w-[450px] px-4 pb-40"
         onSubmit={handleSubmit(submitForm)}
         noValidate
       >
@@ -97,23 +103,16 @@ export default function Login({ params }: { params: { lang: Local } }) {
             {errors.password?.message}
           </p>
         )}
-        <label
-          htmlFor="remember"
-          className="flex items-start justify-center w-full p-0 mt-6"
-        >
-          <input
-            type="checkbox"
-            id="remember"
-            className="accent-primary mr-2 w-[18px] h-[18px]"
-            {...register("remember")}
-          />
-          <span className="leading-tight text-md">{text?.login.remember}</span>
-        </label>
+        <Checkbox
+          checked={checked}
+          setChecked={setChecked}
+          text={text?.login.remember as string}
+        />
         {error && (
           <p className="w-full pt-1 mt-4 text-sm text-left text-red">{error}</p>
         )}
         <button
-          className="w-full p-2 mt-6 rounded-lg bg-primary hover:bg-opacity-80"
+          className="w-full p-2 mt-6 rounded-lg bg-primary hover:bg-opacity-20"
           type="submit"
           id="submit"
         >
