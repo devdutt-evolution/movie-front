@@ -109,8 +109,8 @@ export default function Create({ params }: { params: { lang: Local } }) {
             ) : (
               <Image
                 className="object-cover w-full h-full"
-                width={412}
-                height={370}
+                width={162}
+                height={300}
                 src={imagePreview}
                 alt="preview"
               />

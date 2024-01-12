@@ -11,15 +11,15 @@ export default function Card({
 }) {
   return (
     <Link
-      className="min-h-[400px] min-w-[150px] max-w-[300px]"
+      className="min-h-[370px] max-h-[470px] min-w-[150px] max-w-[300px]"
       href={`movies/${movie._id}`}
     >
       <div className="h-full w-full bg-card flex flex-col rounded-lg gap-2 p-2 hover:bg-input shadow-lg">
         <Image
           className="flex-1 w-full object-cover mb-1 block rounded-lg "
           src={backPath(movie.path)}
-          width={217}
-          height={400}
+          width={162}
+          height={300}
           alt="movie poster"
         />
         <h4 className="text-lg">{movie.title}</h4>

@@ -138,8 +138,8 @@ export default function Edit({
             {initail ? (
               <>
                 <Image
-                  width={412}
-                  height={370}
+                  width={162}
+                  height={300}
                   className="object-cover w-full h-full rounded-lg"
                   src={backPath(defaultPath)}
                   alt="preview"
@@ -169,8 +169,8 @@ export default function Edit({
               </>
             ) : (
               <Image
-                width={412}
-                height={370}
+                width={162}
+                height={300}
                 className="object-cover w-full h-full"
                 src={imagePreview}
                 alt="preview"
