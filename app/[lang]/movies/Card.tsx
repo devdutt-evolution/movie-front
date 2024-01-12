@@ -18,8 +18,8 @@ export default function Card({
         <Image
           className="flex-1 w-full object-cover mb-1 block rounded-lg "
           src={backPath(movie.path)}
-          width={300}
-          height={217}
+          width={217}
+          height={400}
           alt="movie poster"
         />
         <h4 className="text-lg">{movie.title}</h4>

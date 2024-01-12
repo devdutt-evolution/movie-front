@@ -5,7 +5,7 @@ const nextConfig = {
       {
         protocol: "https",
         hostname: "movie-back-cn9a.onrender.com",
-        port: "443",
+        port: "",
         pathname: "/posters/**",
       },
     ],

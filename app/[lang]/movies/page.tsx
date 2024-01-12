@@ -9,6 +9,7 @@ import logoutLogo from "@/public/logout.svg";
 import createLogo from "@/public/plus.svg";
 import { Content, Local } from "@/i18n.config";
 import { getDictionaries } from "@/lib/dictionaries";
+import Select from "./Select";
 
 export default function Movies({ params }: { params: { lang: Local } }) {
   const router = useRouter();
@@ -44,18 +45,21 @@ export default function Movies({ params }: { params: { lang: Local } }) {
             />
           </p>
         </h2>
-        <div
-          className="flex gap-2 text-lg cursor-pointer md:text-2xl"
-          onClick={logout}
-        >
-          <p className="invisible md:visible">{text?.logout}</p>
-          <Image
-            src={logoutLogo}
-            width={25}
-            height={25}
-            alt="logout"
-            className="md:w-9 md:h-9"
-          />
+        <div className="flex items-center gap-2 md:gap-4">
+          <Select lang={params.lang} />
+          <div
+            className="flex gap-2 text-lg cursor-pointer md:text-2xl"
+            onClick={logout}
+          >
+            <p className="w-0 overflow-hidden md:w-min">{text?.logout}</p>
+            <Image
+              src={logoutLogo}
+              width={25}
+              height={25}
+              alt="logout"
+              className="md:w-9 md:h-9"
+            />
+          </div>
         </div>
       </div>
       {/* cards */}
